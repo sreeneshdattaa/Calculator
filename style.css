@@ -1,0 +1,663 @@
+/* ============================================
+   CSS Variables / Design Tokens — Neo-Brutalist
+   ============================================ */
+:root {
+  --bg-page: #e3dff2;
+  --bg-calculator: #fefefe;
+  --bg-display: #1a1a2e;
+  --bg-number: #ffffff;
+  --bg-number-hover: #f0ecfa;
+  --bg-number-active: #ddd6f3;
+  --bg-function: #c8f7c5;
+  --bg-function-hover: #a8eeaa;
+  --bg-function-active: #7bdb7e;
+  --bg-operator: #ffd166;
+  --bg-operator-hover: #ffc233;
+  --bg-operator-active: #f5a623;
+  --bg-equals: #ef476f;
+  --bg-equals-hover: #e5355d;
+  --bg-equals-active: #c9224a;
+  --bg-sci: #d4c5f9;
+  --bg-sci-hover: #c3aef5;
+  --bg-sci-active: #a98de8;
+
+  --border-color: #1a1a2e;
+  --border-width: 3px;
+
+  --text-primary: #1a1a2e;
+  --text-display: #f0f0f8;
+  --text-secondary: rgba(240, 240, 248, 0.6);
+  --text-function: #1a1a2e;
+  --text-operator: #1a1a2e;
+  --text-equals: #ffffff;
+  --text-sci: #2d1b69;
+
+  --shadow-hard: 6px 6px 0px var(--border-color);
+  --shadow-btn: 4px 4px 0px var(--border-color);
+  --shadow-btn-active: 1px 1px 0px var(--border-color);
+
+  --radius-btn: 12px;
+  --radius-calculator: 20px;
+  --radius-display: 14px;
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition-fast: 100ms ease;
+}
+
+/* ============================================
+   Reset & Base Styles
+   ============================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ============================================
+   Background — bold geometric shapes
+   ============================================ */
+.background-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border: var(--border-width) solid var(--border-color);
+  opacity: 0.12;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  background: #ffd166;
+  border-radius: 50%;
+  top: -80px;
+  left: -60px;
+}
+
+.orb-2 {
+  width: 200px;
+  height: 200px;
+  background: #ef476f;
+  border-radius: 0;
+  bottom: 40px;
+  right: 60px;
+  transform: rotate(15deg);
+}
+
+.orb-3 {
+  width: 160px;
+  height: 160px;
+  background: #06d6a0;
+  border-radius: 50% 0 50% 0;
+  top: 60%;
+  left: 8%;
+  transform: rotate(-10deg);
+}
+
+/* ============================================
+   Calculator Container — flex row layout
+   ============================================ */
+.calculator-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+/* ============================================
+   Main Calculator Shell
+   ============================================ */
+.calculator {
+  width: 370px;
+  background: var(--bg-calculator);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius-calculator);
+  box-shadow: var(--shadow-hard);
+  padding: 20px;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============================================
+   Top Bar
+   ============================================ */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calc-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(26, 26, 46, 0.4);
+}
+
+.mode-btn {
+  width: 44px;
+  height: 32px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-number);
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px var(--border-color);
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.mode-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--border-color);
+}
+
+.mode-btn:active,
+.mode-btn.active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--border-color);
+  background: var(--bg-sci);
+}
+
+.mode-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+/* ============================================
+   Display Area
+   ============================================ */
+.display {
+  background: var(--bg-display);
+  border-radius: var(--radius-display);
+  border: var(--border-width) solid var(--border-color);
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  overflow: hidden;
+  box-shadow: inset 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+
+.expression {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  min-height: 1.2em;
+  text-align: right;
+  word-break: break-all;
+  width: 100%;
+}
+
+.current-value {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+  text-align: right;
+  width: 100%;
+  line-height: 1.1;
+  word-break: break-all;
+  color: var(--text-display);
+}
+
+.current-value.shrink-1 { font-size: 2.2rem; }
+.current-value.shrink-2 { font-size: 1.7rem; }
+.current-value.shrink-3 { font-size: 1.3rem; }
+
+/* ============================================
+   Standard Buttons Grid
+   ============================================ */
+.buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* ============================================
+   Button Base — Neo-Brutalist
+   ============================================ */
+.btn {
+  position: relative;
+  height: 64px;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius-btn);
+  font-family: var(--font-family);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  box-shadow: var(--shadow-btn);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px var(--border-color);
+}
+
+.btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: var(--shadow-btn-active);
+}
+
+/* Number Buttons */
+.btn-number {
+  background: var(--bg-number);
+  color: var(--text-primary);
+}
+.btn-number:hover { background: var(--bg-number-hover); }
+.btn-number:active { background: var(--bg-number-active); }
+
+/* Zero Button (Spans 2 Columns) */
+.btn-zero {
+  grid-column: span 2;
+  text-align: left;
+  padding-left: 28px;
+}
+
+/* Function Buttons (AC, +/−, %) */
+.btn-function {
+  background: var(--bg-function);
+  color: var(--text-function);
+}
+.btn-function:hover { background: var(--bg-function-hover); }
+.btn-function:active { background: var(--bg-function-active); }
+
+/* Operator Buttons */
+.btn-operator {
+  background: var(--bg-operator);
+  color: var(--text-operator);
+  font-size: 1.4rem;
+}
+.btn-operator:hover { background: var(--bg-operator-hover); }
+.btn-operator:active { background: var(--bg-operator-active); }
+
+.btn-operator.active {
+  background: var(--bg-operator-active);
+  transform: translate(3px, 3px);
+  box-shadow: var(--shadow-btn-active);
+}
+
+/* Equals Button */
+.btn-equals {
+  background: var(--bg-equals);
+  color: var(--text-equals);
+  font-size: 1.5rem;
+}
+.btn-equals:hover { background: var(--bg-equals-hover); }
+.btn-equals:active { background: var(--bg-equals-active); }
+
+/* ============================================
+   Side Panels — Shared Base
+   ============================================ */
+.side-panel {
+  background: var(--bg-calculator);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--radius-calculator);
+  box-shadow: var(--shadow-hard);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.side-panel.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ============================================
+   Scientific Side Panel (LEFT)
+   ============================================ */
+.sci-panel {
+  width: 240px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(30px) scale(0.92);
+  align-self: center;
+}
+
+.sci-panel.visible {
+  transform: translateX(0) scale(1);
+}
+
+.sci-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.sci-panel-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(26, 26, 46, 0.5);
+}
+
+.sci-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* Scientific Buttons */
+.btn-sci {
+  height: 50px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background: var(--bg-sci);
+  color: var(--text-sci);
+  box-shadow: 3px 3px 0px var(--border-color);
+  border-width: 2px;
+}
+
+.btn-sci:hover {
+  background: var(--bg-sci-hover);
+  box-shadow: 4px 4px 0px var(--border-color);
+}
+
+.btn-sci:active {
+  background: var(--bg-sci-active);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+
+/* 2nd button in header */
+.btn-2nd {
+  height: 28px;
+  width: 50px;
+  font-size: 0.75rem;
+  padding: 0;
+}
+
+.btn-2nd.active-2nd {
+  background: #f5a623;
+  color: #1a1a2e;
+}
+
+/* ============================================
+   History Side Panel (RIGHT)
+   ============================================ */
+.history-panel {
+  width: 260px;
+  max-height: 540px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-30px) scale(0.92);
+  align-self: center;
+}
+
+.history-panel.visible {
+  transform: translateX(0) scale(1);
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.history-header h2 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.history-clear-btn {
+  font-family: var(--font-family);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-equals);
+  color: white;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.history-clear-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--border-color);
+}
+
+.history-clear-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-list::-webkit-scrollbar { width: 4px; }
+.history-list::-webkit-scrollbar-track { background: transparent; }
+.history-list::-webkit-scrollbar-thumb {
+  background: rgba(26, 26, 46, 0.2);
+  border-radius: 4px;
+}
+
+.history-empty {
+  text-align: center;
+  color: rgba(26, 26, 46, 0.35);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 40px 10px;
+  line-height: 1.5;
+}
+
+.history-item {
+  padding: 10px 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  background: #f8f6ff;
+  cursor: pointer;
+  box-shadow: 2px 2px 0px var(--border-color);
+  transition: all var(--transition-fast);
+  animation: historySlideIn 0.2s ease-out;
+}
+
+.history-item:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px var(--border-color);
+  background: #efe9ff;
+}
+
+.history-item:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--border-color);
+}
+
+.history-expression {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(26, 26, 46, 0.5);
+  margin-bottom: 3px;
+  word-break: break-all;
+}
+
+.history-result {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+/* ============================================
+   Ripple
+   ============================================ */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  transform: scale(0);
+  animation: ripple-effect 0.4s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes valueUpdate {
+  0% { opacity: 0.6; transform: translateY(-3px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.current-value.animate {
+  animation: valueUpdate 0.12s ease-out;
+}
+
+@keyframes historySlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   Responsive / Mobile
+   ============================================ */
+@media (max-width: 900px) {
+  body {
+    align-items: flex-start;
+    padding: 20px 10px;
+    overflow-y: auto;
+  }
+
+  .calculator-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sci-panel {
+    width: 370px;
+    transform: translateY(-10px) scale(0.95);
+    order: -1;
+  }
+
+  .sci-panel.visible {
+    transform: translateY(0) scale(1);
+  }
+
+  .sci-buttons {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .btn-2nd {
+    width: auto;
+  }
+
+  .history-panel {
+    width: 370px;
+    max-height: 250px;
+    transform: translateY(-10px) scale(0.95);
+  }
+
+  .history-panel.visible {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 420px) {
+  .calculator {
+    width: 100vw;
+    border-radius: 0;
+    padding: 16px 12px;
+    border: none;
+    box-shadow: none;
+  }
+
+  .display {
+    min-height: 90px;
+    border-radius: 12px;
+  }
+
+  .buttons-grid { gap: 8px; }
+
+  .btn {
+    height: 58px;
+    border-radius: 10px;
+  }
+
+  .current-value { font-size: 2.5rem; }
+
+  .sci-panel,
+  .history-panel {
+    width: 100vw;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+  }
+}
